@@ -12,7 +12,7 @@ class MenuController {
         def list=[];
 
         for ( i in menus ) {
-            def map=[text:i.functionId,leaf:true,iconCls:'text']
+            def map=[text:i.functionId,leaf:true,iconCls:'text',id:i.functionId]
             list.add(map)
         }
 
