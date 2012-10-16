@@ -8,5 +8,7 @@ class User {
 	String email;
 
     static constraints = {
+		name nullable: true
+		email nullable: true
     }
 }
