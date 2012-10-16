@@ -3,11 +3,10 @@ package agricloud
 class Menu {
 	String functionId
 	String description
-	String groupId
-	Menu parent
+	String folderId
 
     static constraints = {
-    	parent nullable: true
-		groupId nullable: true
+		folderId nullable: true
+		description nullable: true
     }
 }
