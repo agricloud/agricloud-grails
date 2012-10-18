@@ -1,9 +1,11 @@
 package agricloud
 
+import grails.converters.JSON
+
 class MenuController {
     static scaffold = true
 
-    def tree = {
+    def treeStore = {
     	//def user = User.findByAccount(params.account)
 
         def list = []
@@ -22,4 +24,15 @@ class MenuController {
             [children: list]
         }
     }
+	
+	def gridStore = {
+		render (contentType: 'text/json') {
+            [
+				items: Menu.list(),
+				totalCount: Menu.count()
+			]
+        }
+	}
+	
+
 }
