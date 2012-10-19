@@ -16,9 +16,10 @@ class UserGroupController {
 	def create = {
 		def item=new UserGroup(userGroupId: request.JSON.userGroupId, description: request.JSON.description)
 		
+		item.save()
 		render (contentType: 'text/json') {
 			[
-				success: item.save()!=null
+				success: item.hasErrors()==false
 			]
 		}
 	}
@@ -35,9 +36,10 @@ class UserGroupController {
 		
 			item.userGroupId = request.JSON.userGroupId
 			item.description = request.JSON.description	
+			item.save()
 			render (contentType: 'text/json') {
 				[
-					success: item.save()!=null
+					success: item.hasErrors()==false
 				]
 			}
 		}
@@ -57,7 +59,7 @@ class UserGroupController {
 			
 			render (contentType: 'text/json') {
 				[
-					success: true
+					success: item.hasErrors()==false
 				]
 			}
 		}
@@ -74,23 +76,5 @@ class UserGroupController {
 //				break
 //		}
 //	}
-	private def sendValidationFailedResponse(item, status) {
-		response.status = status
-		render contentType: "application/xml", {
-			item {
-				item?.errors?.fieldErrors?.each {err ->
-					field(err.field)
-					message(g.message(error: err))
-				}
-			}
-		}
-	}
-	private def SendNotFoundResponse() {
-		response.status = 404
-		render contentType: "application/xml", {
-			errors {
-				message("Customer not found with id: " + params.id)
-			}
-		}
-	}
+
 }

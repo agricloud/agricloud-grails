@@ -41,10 +41,10 @@ class MenuGroupController {
 		item.menu=menu;
 		item.userGroup=userGroup;
 		
-
+		item.save()
         render (contentType: 'text/json') {
             [
-                success: item.save()!=null
+                success: item.hasErrors()==false
             ]
         }
 
@@ -61,12 +61,12 @@ class MenuGroupController {
 			}
 		}else {
 		
-			item.menu=menu;
-			item.userGroup=userGroup;
-	
+			item.menu=menu
+			item.userGroup=userGroup
+			item.save()
 			render (contentType: 'text/json') {
 				[
-					success: item.save()!=null
+					success: item.hasErrors()==false
 				]
 			}
 		}
@@ -88,7 +88,7 @@ class MenuGroupController {
 			
 			render (contentType: 'text/json') {
 				[
-					success: true
+					success: item.hasErrors()==false
 				]
 			}
 		}
