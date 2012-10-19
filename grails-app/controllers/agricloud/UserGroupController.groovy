@@ -15,29 +15,31 @@ class UserGroupController {
 	}
 	def create = {
 		def item=new UserGroup(userGroupId: request.JSON.userGroupId, description: request.JSON.description)
-		if (item.validate()) {
-			item.save();
-			response.status = 201
-			render item as JSON
-		} else {
-			sendValidationFailedResponse(item, 403)
+		
+		render (contentType: 'text/json') {
+			[
+				success: item.save()!=null
+			]
 		}
 	}
 	def update = {
 		def item=UserGroup.findById(params.id)
+
 		if (!item) {
-			SendNotFoundResponse()
-		}
-		item.userGroupId = request.JSON.userGroupId
-		item.description = request.JSON.description
-
-
-		if (item.validate()) {
-			item.save();
-			response.status = 201
-			render ""
-		} else {
-			sendValidationFailedResponse(item, 403)
+			render (contentType: 'text/json') {
+				[
+					success: false
+				]
+			}
+		}else {
+		
+			item.userGroupId = request.JSON.userGroupId
+			item.description = request.JSON.description	
+			render (contentType: 'text/json') {
+				[
+					success: item.save()!=null
+				]
+			}
 		}
 	}
 	
@@ -45,11 +47,20 @@ class UserGroupController {
 		def item=UserGroup.findById(params.id)
 
 		if (!item) {
-			SendNotFoundResponse()
+			render (contentType: 'text/json') {
+				[
+					success: false
+				]
+			}
+		}else {
+			item.delete();
+			
+			render (contentType: 'text/json') {
+				[
+					success: true
+				]
+			}
 		}
-		item.delete();
-		response.status = 204
-		render ""
 	}
 //	def rest = {
 //		switch(request.method){

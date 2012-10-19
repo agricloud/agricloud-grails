@@ -42,9 +42,11 @@ class MenuGroupController {
 		item.userGroup=userGroup;
 		
 
-		item.save();
-		response.status = 201
-		render item as JSON
+        render (contentType: 'text/json') {
+            [
+                success: item.save()!=null
+            ]
+        }
 
 	}
 	def update = {
@@ -52,19 +54,21 @@ class MenuGroupController {
 		def userGroup=UserGroup.findByUserGroupId(request.JSON.userGroupId)
 		def item=MenuGroup.findById(request.JSON.id)
 		if (!item) {
-			SendNotFoundResponse()
-		}
+			render (contentType: 'text/json') {
+				[
+					success: false
+				]
+			}
+		}else {
 		
-		item.menu=menu;
-		item.userGroup=userGroup;
-
-
-		if (item.validate()) {
-			item.save();
-			response.status = 201
-			render ""
-		} else {
-			sendValidationFailedResponse(item, 403)
+			item.menu=menu;
+			item.userGroup=userGroup;
+	
+			render (contentType: 'text/json') {
+				[
+					success: item.save()!=null
+				]
+			}
 		}
 	}
 	
@@ -74,28 +78,18 @@ class MenuGroupController {
 		def item=MenuGroup.findById(params.id)
 
 		if (!item) {
-			SendNotFoundResponse()
-		}
-		item.delete();
-		response.status = 204
-		render ""
-	}
-	private def sendValidationFailedResponse(item, status) {
-		response.status = status
-		render contentType: "application/xml", {
-			item {
-				item?.errors?.fieldErrors?.each {err ->
-					field(err.field)
-					message(g.message(error: err))
-				}
+			render (contentType: 'text/json') {
+				[
+					success: false
+				]
 			}
-		}
-	}
-	private def SendNotFoundResponse() {
-		response.status = 404
-		render contentType: "application/xml", {
-			errors {
-				message("Customer not found with id: " + params.id)
+		}else {
+			item.delete();
+			
+			render (contentType: 'text/json') {
+				[
+					success: true
+				]
 			}
 		}
 	}
