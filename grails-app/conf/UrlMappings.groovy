@@ -16,7 +16,7 @@ class UrlMappings {
 				// apply constraints here
 			}
 		}
-		"/rest/$controller?"{
+		"/rest/$controller"{
 			action = [GET:"listAll", POST: "create"]
 			constraints {
 				// apply constraints here
